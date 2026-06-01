@@ -1,0 +1,157 @@
+:root {
+    --fundo-site: #111425;
+    --fundo-card: #181c33;
+    --fundo-senha: #242a49;
+    --borda: #4c5686;
+    --texto: #ffffff;
+    --cor-fraca: #E71B32;
+    --cor-media: #FAF408;
+    --cor-forte: #00FF85;
+}
+
+body {
+    background-color: var(--fundo-site);
+    color: var(--texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.conteudo {
+    background-color: var(--fundo-card);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+}
+
+.parametro-titulo {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.parametro-senha {
+    margin-bottom: 25px;
+}
+
+.parametro-senha__titulo {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.parametro-senha-botoes {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.parametro-senha__botao {
+    background-color: var(--fundo-senha);
+    border: 1px solid var(--borda);
+    color: var(--texto);
+    font-size: 1.2rem;
+    padding: 5px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.parametro-senha__botao:hover {
+    background-color: var(--borda);
+}
+
+.parametro-senha__texto {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+.parametro-opcoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* --- Barras de Força da Senha --- */
+.barra-fundo {
+    background-color: var(--fundo-senha);
+    height: 15px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.forca {
+    height: 15px;
+    position: relative;
+    bottom: 15px; /* Sobe a barra colorida exatamente sobre a barra de fundo */
+    border-radius: 4px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.fraca {
+    width: 25%;
+    background-color: var(--cor-fraca);
+}
+
+.media {
+    width: 50%;
+    background-color: var(--cor-media);
+}
+
+.forte {
+    width: 100%;
+    background-color: var(--cor-forte);
+}
+
+.parametro-senha-textos {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -5px;
+    font-size: 0.85rem;
+    color: #a0a5c1;
+}
+
+/* --- Resultado --- */
+.resultado-container {
+    margin-top: 20px;
+}
+
+#campo-senha {
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
+    background-color: var(--fundo-senha);
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    color: var(--texto);
+    font-family: monospace;
+    font-size: 1.2rem;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.texto-tempo {
+    font-size: 0.9rem;
+    color: #a0a5c1;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.entropia {
+    font-weight: bold;
+    color: var(--texto);
+}
