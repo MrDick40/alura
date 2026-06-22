@@ -1,100 +1,134 @@
-// 1. DECLARAÇÃO DE VARIÁVEIS E COMPONENTES DO DOM
 const numeroSenha = document.querySelector('.parametro-senha__texto');
-let tamanhoSenha = 12;
-numeroSenha.textContent = tamanhoSenha;
-
-const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVXYWZ';
-const letrasMinusculas = 'abcdefghijklmnopqrstuvxywz';
-const numeros = '0123456789';
-const simbolos = '!@%*?';
-
 const botoes = document.querySelectorAll('.parametro-senha__botao');
 const campoSenha = document.querySelector('#campo-senha');
 const checkboxes = document.querySelectorAll('.checkbox');
+const botaoGerar = document.querySelector('#botao-gerar');
+const botaoCopiar = document.querySelector('#botao-copiar');
+const avisoCopia = document.querySelector('.aviso-copia');
+const statusForca = document.querySelector('.status-forca');
 
-// 2. CONFIGURAÇÃO DOS BOTÕES (+ e -)
+let tamanhoSenha = 12;
+numeroSenha.textContent = tamanhoSenha;
+
+const letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
+const numeros = '0123456789';
+const simbolos = '!@#$%&*?_-+=';
+
 botoes[0].onclick = diminuiTamanho;
 botoes[1].onclick = aumentaTamanho;
+botaoGerar.onclick = geraSenha;
+botaoCopiar.onclick = copiaSenha;
 
-// Atualiza a senha automaticamente quando qualquer caixinha for clicada
-checkboxes.forEach(checkbox => {
+checkboxes.forEach((checkbox) => {
     checkbox.onclick = geraSenha;
 });
 
 function diminuiTamanho() {
-    if (tamanhoSenha > 1) { // Garante que o tamanho não seja menor que 1
+    if (tamanhoSenha > 4) {
         tamanhoSenha--;
-        numeroSenha.textContent = tamanhoSenha;
-        geraSenha();
+        atualizaTamanho();
     }
 }
 
 function aumentaTamanho() {
-    tamanhoSenha++;
+    if (tamanhoSenha < 32) {
+        tamanhoSenha++;
+        atualizaTamanho();
+    }
+}
+
+function atualizaTamanho() {
     numeroSenha.textContent = tamanhoSenha;
     geraSenha();
 }
 
-// 3. FUNÇÃO PRINCIPAL PARA GERAR A SENHA ALEATÓRIA
-function geraSenha() {
+function montaAlfabeto() {
     let alfabeto = '';
-    
-    // Constrói o banco de caracteres conforme as marcações
+
     if (checkboxes[0].checked) alfabeto += letrasMaiusculas;
     if (checkboxes[1].checked) alfabeto += letrasMinusculas;
     if (checkboxes[2].checked) alfabeto += numeros;
     if (checkboxes[3].checked) alfabeto += simbolos;
 
-    // Caso nenhum checkbox esteja marcado, exibe um aviso e limpa o campo
+    return alfabeto;
+}
+
+function geraSenha() {
+    const alfabeto = montaAlfabeto();
+    avisoCopia.textContent = '';
+
     if (alfabeto.length === 0) {
-        campoSenha.value = "Selecione uma opção";
-        const valorEntropia = document.querySelector('.entropia');
-        valorEntropia.textContent = "0";
-        const forcaSenha = document.querySelector('.forca');
-        forcaSenha.classList.remove('fraca', 'media', 'forte');
+        campoSenha.value = 'Escolha pelo menos uma opção';
+        atualizaForca(0);
         return;
     }
 
     let senha = '';
+
     for (let i = 0; i < tamanhoSenha; i++) {
-        let numeroAleatorio = Math.random() * alfabeto.length;
-        numeroAleatorio = Math.floor(numeroAleatorio);
-        senha += alfabeto[numeroAleatorio];
+        const posicaoAleatoria = Math.floor(Math.random() * alfabeto.length);
+        senha += alfabeto[posicaoAleatoria];
     }
-    
+
     campoSenha.value = senha;
     classificaSenha(alfabeto.length);
 }
 
-// 4. FUNÇÃO PARA CALCULAR A ENTROPIA E ALTERAR A INTERFACE
 function classificaSenha(tamanhoAlfabeto) {
-    // Equação da entropia: Comprimento * log2(Tamanho do Alfabeto)
-    let entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
-    console.log("Entropia atual em bits: " + entropia);
+    const entropia = tamanhoSenha * Math.log2(tamanhoAlfabeto);
+    atualizaForca(entropia);
 
-    const forcaSenha = document.querySelector('.forca');
-    forcaSenha.classList.remove('fraca', 'media', 'forte');
-
-    // Validação pelas regras de entropia definidas em aula
-    if (entropia > 57) {
-        forcaSenha.classList.add('forte');
-    } else if (entropia > 35 && entropia < 57) {
-        forcaSenha.classList.add('media');
-    } else if (entropia <= 35) {
-        forcaSenha.classList.add('fraca');
-    }
-
-    // Exibição do cálculo do tempo estimado em dias
     const valorEntropia = document.querySelector('.entropia');
-    let diasParaQuebrar = (2 ** Math.floor(entropia)) / (100e6 * 60 * 60 * 24);
-    
-    // Formata o número para exibição de forma legível
+    const segundosParaQuebrar = (2 ** Math.floor(entropia)) / 100e6;
+    const diasParaQuebrar = segundosParaQuebrar / 60 / 60 / 24;
+
     if (diasParaQuebrar < 0.01) {
-        valorEntropia.textContent = "Imediato";
+        valorEntropia.textContent = 'quase imediato';
+    } else if (diasParaQuebrar > 365) {
+        const anos = diasParaQuebrar / 365;
+        valorEntropia.textContent = `${anos.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} anos`;
     } else {
-        valorEntropia.textContent = diasParaQuebrar.toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+        valorEntropia.textContent = `${diasParaQuebrar.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} dias`;
     }
 }
 
-// Inicializa o programa gerando a primeira senha padrão ao carregar a página
+function atualizaForca(entropia) {
+    const forcaSenha = document.querySelector('.forca');
+    forcaSenha.classList.remove('fraca', 'media', 'forte');
+
+    if (entropia === 0) {
+        statusForca.textContent = 'Sem dados';
+        document.querySelector('.entropia').textContent = '0 dias';
+        return;
+    }
+
+    if (entropia > 57) {
+        forcaSenha.classList.add('forte');
+        statusForca.textContent = 'Forte';
+    } else if (entropia > 35) {
+        forcaSenha.classList.add('media');
+        statusForca.textContent = 'Média';
+    } else {
+        forcaSenha.classList.add('fraca');
+        statusForca.textContent = 'Fraca';
+    }
+}
+
+async function copiaSenha() {
+    if (!campoSenha.value || campoSenha.value.includes('Escolha')) {
+        avisoCopia.textContent = 'Gere uma senha primeiro.';
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(campoSenha.value);
+        avisoCopia.textContent = 'Senha copiada.';
+    } catch (erro) {
+        campoSenha.select();
+        document.execCommand('copy');
+        avisoCopia.textContent = 'Senha copiada.';
+    }
+}
+
 geraSenha();
