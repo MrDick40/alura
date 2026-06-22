@@ -3,58 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Senhas Seguras</title>
+    <title>Senha Sob Medida</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <main class="conteudo">
-        <section class="parametro">
-            <h3 class="parametro-titulo">Personalize sua senha</h3>
-            
-            <div class="parametro-coluna__senha">
-                <div class="parametro-senha">
-                    <h4 class="parametro-senha__titulo">Número de caracteres</h4>
-                    <div class="parametro-senha-botoes">
-                        <button class="parametro-senha__botao">-</button>
-                        <p class="parametro-senha__texto">12</p>
-                        <button class="parametro-senha__botao">+</button>
+        <section class="hero">
+            <p class="etiqueta">gerador seguro</p>
+            <h1>Senha sob medida</h1>
+            <p class="subtitulo">Monte uma senha forte sem cara de formulário genérico.</p>
+        </section>
+
+        <section class="parametro" aria-label="Configurações da senha">
+            <div class="cartao cartao-controles">
+                <div class="cabecalho-cartao">
+                    <div>
+                        <span class="passo">01</span>
+                        <h2 class="parametro-titulo">Tamanho da senha</h2>
                     </div>
+                    <p class="dica">12 a 18 já costuma ficar bem parrudo.</p>
+                </div>
+
+                <div class="parametro-senha-botoes" aria-label="Alterar número de caracteres">
+                    <button class="parametro-senha__botao" type="button" aria-label="Diminuir tamanho">−</button>
+                    <p class="parametro-senha__texto" aria-live="polite">12</p>
+                    <button class="parametro-senha__botao" type="button" aria-label="Aumentar tamanho">+</button>
+                </div>
+            </div>
+
+            <div class="cartao cartao-opcoes">
+                <div class="cabecalho-cartao">
+                    <div>
+                        <span class="passo">02</span>
+                        <h2 class="parametro-titulo">Ingredientes</h2>
+                    </div>
+                    <p class="dica">Misture mais tipos para dificultar a vida dos curiosos.</p>
                 </div>
 
                 <div class="parametro-opcoes">
                     <label class="checkbox-container">
                         <input type="checkbox" class="checkbox" checked>
-                        Letras Maiúsculas
+                        <span class="check-visual"></span>
+                        <span>Letras maiúsculas</span>
                     </label>
                     <label class="checkbox-container">
                         <input type="checkbox" class="checkbox" checked>
-                        Letras Minúsculas
+                        <span class="check-visual"></span>
+                        <span>Letras minúsculas</span>
                     </label>
                     <label class="checkbox-container">
                         <input type="checkbox" class="checkbox" checked>
-                        Números
+                        <span class="check-visual"></span>
+                        <span>Números</span>
                     </label>
                     <label class="checkbox-container">
                         <input type="checkbox" class="checkbox">
-                        Símbolos
+                        <span class="check-visual"></span>
+                        <span>Símbolos</span>
                     </label>
                 </div>
+            </div>
 
-                <div class="parametro-senha">
-                    <h4 class="parametro-senha__titulo">Força da senha</h4>
+            <div class="cartao cartao-forca">
+                <div class="cabecalho-cartao">
+                    <div>
+                        <span class="passo">03</span>
+                        <h2 class="parametro-titulo">Força da senha</h2>
+                    </div>
+                    <strong class="status-forca">Fraca</strong>
+                </div>
+
+                <div class="medidor" aria-hidden="true">
                     <div class="barra-fundo"></div>
                     <div class="forca fraca"></div>
-                    <div class="parametro-senha-textos">
-                        <p>Fraca</p>
-                        <p>Média</p>
-                        <p>Forte</p>
-                    </div>
                 </div>
 
-                <div class="resultado-container">
-                    <input type="text" id="campo-senha" readonly>
-                    <p class="texto-tempo">Tempo estimado para quebrar a senha: <span class="entropia"></span> dias</p>
+                <div class="parametro-senha-textos">
+                    <p>Fraca</p>
+                    <p>Média</p>
+                    <p>Forte</p>
                 </div>
+            </div>
+
+            <div class="cartao resultado-container">
+                <div class="cabecalho-cartao">
+                    <div>
+                        <span class="passo">04</span>
+                        <h2 class="parametro-titulo">Resultado</h2>
+                    </div>
+                    <button class="botao-secundario" type="button" id="botao-gerar">Nova senha</button>
+                </div>
+
+                <div class="campo-wrapper">
+                    <input type="text" id="campo-senha" readonly aria-label="Senha gerada">
+                    <button class="botao-copiar" type="button" id="botao-copiar">Copiar</button>
+                </div>
+
+                <p class="texto-tempo">Tempo estimado para quebrar: <span class="entropia"></span></p>
+                <p class="aviso-copia" aria-live="polite"></p>
             </div>
         </section>
     </main>
